@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f3ee"><meta name="description" content="AUREL — considered eyewear and watches for everyday life.">
+<meta name="theme-color" content="#f5f3ee"><meta name="description" content="AUREL — considered eyewear and watches for everyday life."><meta property="og:type" content="website"><meta property="og:title" content="AUREL — Objects for how you move"><meta property="og:description" content="Thoughtful eyewear and timepieces, made for everyday life."><meta property="og:image" content="https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1200&q=85">
 <title>AUREL — Objects for how you move</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="announcement">Complimentary shipping on orders over $150 &nbsp;·&nbsp; Thoughtfully made, made to last</div>
-<header class="topbar"><button class="menu-toggle" aria-label="Open menu" onclick="document.querySelector('.navlinks').classList.toggle('mobile-open')">☰</button><a class="wordmark" href="#">AUREL</a><nav class="navlinks"><a href="#shop" data-nav="All">Shop all</a><a href="#shop" data-nav="Eyewear">Eyewear</a><a href="#shop" data-nav="Watches">Watches</a><a href="#story">Our story</a></nav><div class="actions"><button class="icon-btn search-action" onclick="document.querySelector('#search').focus()" aria-label="Search">⌕</button><button class="icon-btn bag" id="open-cart">Bag <b id="bag-count">0</b></button></div></header>
+<header class="topbar"><button class="menu-toggle" aria-label="Open menu" aria-expanded="false" onclick="const nav=document.querySelector('.navlinks');const open=nav.classList.toggle('mobile-open');this.setAttribute('aria-expanded',open)">☰</button><a class="wordmark" href="#">AUREL</a><nav class="navlinks"><a href="#shop" data-nav="All">Shop all</a><a href="#shop" data-nav="Eyewear">Eyewear</a><a href="#shop" data-nav="Watches">Watches</a><a href="#story">Our story</a></nav><div class="actions"><button class="icon-btn search-action" onclick="document.querySelector('#search').focus()" aria-label="Search">⌕</button><button class="icon-btn bag" id="open-cart">Bag <b id="bag-count">0</b></button></div></header>
 <main>
 <section class="hero"><div class="hero-copy"><div class="eyebrow">The everyday edit · 2026</div><h1>See things<br><em>your way.</em></h1><p>Thoughtful eyewear and timepieces, made for the moments that make a life.</p><a class="button" href="#shop">Explore the collection&nbsp; ↗</a></div><div class="hero-photo"><img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1300&q=85" alt="Sculptural sunglasses in warm afternoon light"><div class="hero-note">Form meets feeling<span>New season · No. 04</span></div></div></section>
 <div class="benefits"><div class="benefit"><i>✳</i> Designed to be worn daily</div><div class="benefit"><i>◌</i> Free shipping over $150</div><div class="benefit"><i>↺</i> Easy 30-day returns</div></div>
@@ -29,7 +29,7 @@
 const products=[
 {id:1,name:"The Sol",type:"Eyewear",price:145,color:"Tortoise / Amber",tag:"Bestseller",img:"photo-1511499767150-a48a237f0083"},
 {id:2,name:"The N° 02",type:"Watches",price:285,color:"Brushed steel / Ivory",tag:"New",img:"photo-1524805444758-089113d48a6d"},
-{id:3,name:"The Sunday",type:"Eyewear",price:165,color:"Honey / Smoke",tag:"",img:"photo-1517841905240-472988babdf9"},
+{id:3,name:"The Sunday",type:"Eyewear",price:165,color:"Honey / Smoke",tag:"",img:"photo-1508296695146-257a814070b4"},
 {id:4,name:"The Meridian",type:"Watches",price:320,color:"Gold / Espresso",tag:"Limited",img:"photo-1523170335258-f5ed11844a49"},
 {id:5,name:"The Arc",type:"Eyewear",price:138,color:"Olive / Moss",tag:"",img:"photo-1508296695146-257a814070b4"},
 {id:6,name:"The Field",type:"Watches",price:250,color:"Steel / Black",tag:"",img:"photo-1523275335684-37898b6baf30"},
@@ -37,10 +37,11 @@ const products=[
 {id:8,name:"The Petite",type:"Watches",price:295,color:"Champagne / Gold",tag:"",img:"photo-1547996160-81dfa63595aa"}
 ];
 const imgUrl=id=>id.includes(" ")? "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80":`https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&q=80`;
-let activeFilter="All",query="",cart=JSON.parse(localStorage.getItem("aurel-cart")||"[]");
+let activeFilter="All",query="",cart=[];
+try{const storedCart=JSON.parse(localStorage.getItem("aurel-cart")||"[]");cart=Array.isArray(storedCart)?storedCart.map(Number).filter(id=>products.some(p=>p.id===id)):[]}catch{cart=[]}
 const grid=document.querySelector("#products");
 function renderProducts(){const shown=products.filter(p=>(activeFilter==="All"||p.type===activeFilter)&&(`${p.name} ${p.type} ${p.color}`.toLowerCase().includes(query.toLowerCase())));document.querySelector("#result-count").textContent=`${shown.length} pieces`;grid.innerHTML=shown.map(p=>`<article class="product"><div class="product-image"><img loading="lazy" src="${imgUrl(p.img)}" alt="${p.name}, ${p.type.toLowerCase()} in ${p.color}" onerror="this.src='https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80'">${p.tag?`<span class="tag">${p.tag}</span>`:""}<button class="quick-add" data-add="${p.id}">Add to bag&nbsp; +</button></div><div class="product-meta"><span>${p.name}</span><span class="price">$ ${p.price}</span></div><div class="product-type">${p.type} &nbsp;·&nbsp; ${p.color}</div></article>`).join("")}
-function saveCart(){localStorage.setItem("aurel-cart",JSON.stringify(cart));renderCart()}
+function saveCart(){try{localStorage.setItem("aurel-cart",JSON.stringify(cart))}catch{}renderCart()}
 function add(id){cart.push(id);saveCart();toast("Added to your bag");}
 function renderCart(){const count=cart.length;document.querySelector("#bag-count").textContent=count;document.querySelector("#drawer-count").textContent=count?`(${count})`:"";const items=document.querySelector("#cart-items");if(!count){items.innerHTML='<div class="empty">Your bag is taking a little breather.<br><br><a href="#shop" onclick="closeCart()">Explore the collection ↗</a></div>';document.querySelector("#cart-total").innerHTML="";return}items.innerHTML=cart.map((id,i)=>{const p=products.find(x=>x.id===id);return `<div class="cart-row"><img src="${imgUrl(p.img)}" alt=""><div>${p.name}<small>${p.type} · ${p.color}</small><button class="remove" data-remove="${i}">Remove</button></div><span>$${p.price}</span></div>`}).join("");const total=cart.reduce((sum,id)=>sum+products.find(p=>p.id===id).price,0);document.querySelector("#cart-total").innerHTML=`<div class="total-line"><span>Subtotal</span><strong>$${total.toFixed(2)}</strong></div><button class="button checkout" id="checkout">Continue to checkout&nbsp; ↗</button>`}
 function openCart(){document.querySelector("#drawer").classList.add("open");document.querySelector("#backdrop").classList.add("open");document.body.style.overflow="hidden"}
@@ -49,9 +50,9 @@ function toast(t){const el=document.querySelector("#toast");el.textContent=t;el.
 document.addEventListener("click",e=>{if(e.target.dataset.add)add(Number(e.target.dataset.add));if(e.target.dataset.remove!==undefined){cart.splice(Number(e.target.dataset.remove),1);saveCart()}});
 document.querySelectorAll(".filter").forEach(b=>b.addEventListener("click",()=>{activeFilter=b.dataset.filter;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));renderProducts()}));
 document.querySelector("#search").addEventListener("input",e=>{query=e.target.value;renderProducts()});
-document.querySelectorAll("[data-nav]").forEach(a=>a.addEventListener("click",()=>{activeFilter=a.dataset.nav;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x.dataset.filter===activeFilter));renderProducts()}));
+document.querySelectorAll("[data-nav]").forEach(a=>a.addEventListener("click",()=>{activeFilter=a.dataset.nav;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x.dataset.filter===activeFilter));renderProducts();const nav=document.querySelector(".navlinks");nav.classList.remove("mobile-open");document.querySelector(".menu-toggle").setAttribute("aria-expanded","false")}));
 document.querySelector("#open-cart").addEventListener("click",openCart);document.querySelector("#close-cart").addEventListener("click",closeCart);document.querySelector("#backdrop").addEventListener("click",closeCart);document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart()});
-document.querySelector("#cart-total").addEventListener("click",e=>{if(e.target.id==="checkout")toast("Checkout is ready to connect to your store provider.")});
-document.querySelector("#subscribe").addEventListener("submit",e=>{e.preventDefault();e.target.reset();toast("You're on the list — thank you!")});
+document.querySelector("#cart-total").addEventListener("click",e=>{if(e.target.id==="checkout")toast("Checkout is a demo until a payment provider is connected.")});
+document.querySelector("#subscribe").addEventListener("submit",e=>{e.preventDefault();e.target.reset();toast("Newsletter signup is a demo and is not being stored yet.")});
 renderProducts();renderCart();
 </script></body></html>
