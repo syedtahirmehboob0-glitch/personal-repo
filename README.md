@@ -1,4 +1,4 @@
-# AUREL storefront
+# L’Heure en Vue storefront
 
 A responsive static storefront for eyewear and watches, configured to deploy as Cloudflare Worker static assets.
 
@@ -24,12 +24,14 @@ The Worker is named `personal-repo`, matching `wrangler.jsonc`.
 
 Cloudflare Workers Builds deploys from the connected Git repository on each push. The Worker name must match the `name` in Wrangler configuration. Official setup: [Connect an existing Worker](https://developers.cloudflare.com/workers/ci-cd/builds/) and [Workers Builds configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).
 
+## Brand name
+
+L’Heure en Vue is a French wordplay pairing time and vision. A quick search did not surface an exact eyewear or watch brand match, but this is not a trademark, company-name, domain, or social-handle clearance. Check the relevant registries and availability before investing in the brand.
+
 ## Before accepting real orders
 
-- AUREL is a sample brand name and is already used by an eyewear seller. Check a replacement name before launch.
 - Replace sample products, prices, product images, and business contact details with verified information.
 - The cart is a browser-side demo. Checkout does not accept orders or payments until a commerce/payment provider is connected.
 - Newsletter signup is a front-end demo and does not store email addresses.
 - Confirm shipping, returns, privacy and terms content for your actual business.
-- The page currently uses USD prices and hosted Google Fonts/Unsplash images.
-
+- The page currently uses USD sample prices and hosted Google Fonts/Unsplash images.
