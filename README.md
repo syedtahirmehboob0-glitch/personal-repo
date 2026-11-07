@@ -1,32 +1,35 @@
 # AUREL storefront
 
-A modern, responsive storefront for eyewear and watches. It is a lightweight static site: no build step or package installation is required.
+A responsive static storefront for eyewear and watches, configured to deploy as Cloudflare Worker static assets.
 
 ## Preview locally
 
-Open `index.html` in a browser, or run a local static server from the repository directory:
+Open `public/index.html` in a browser, or run a local static server from the repository directory:
 
 ```sh
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory public
 ```
 
 Then visit `http://localhost:8000`.
 
-## Publish with GitHub Pages
+## Connect the existing Cloudflare Worker to GitHub
 
-1. Open the repository's **Settings → Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select branch **main** and folder **/(root)**, then save.
-4. GitHub will show the published site URL in the Pages settings when deployment finishes.
+The Worker is named `personal-repo`, matching `wrangler.jsonc`.
 
-The homepage is `index.html` at the repository root, ready for this setup.
+1. In Cloudflare, open **Workers & Pages → personal-repo → Settings → Builds**.
+2. Connect the GitHub repository `syedtahirmehboob0-glitch/personal-repo`.
+3. Select branch `main` and repository root `/`.
+4. Leave the build command blank and use deploy command `npx wrangler deploy`.
+5. Save and check the resulting build under the Worker’s Deployments page.
 
-## Customize before launch
+Cloudflare Workers Builds deploys from the connected Git repository on each push. The Worker name must match the `name` in Wrangler configuration. Official setup: [Connect an existing Worker](https://developers.cloudflare.com/workers/ci-cd/builds/) and [Workers Builds configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).
 
-- Replace the sample AUREL name, product descriptions, prices and contact details in `index.html`.
-- Replace the Unsplash image URLs with your own product photography.
-- The cart is a front-end demo and persists in the visitor's browser. The checkout button currently shows a setup message; connect a payment and order system (such as Shopify or Stripe Checkout) before accepting orders.
-- The newsletter form is a front-end interaction only. Connect it to an email marketing provider to collect subscriptions.
-- Update shipping, returns, privacy and terms content to match your business.
+## Before accepting real orders
 
-The site uses Google Fonts and hosted Unsplash images, so those resources need an internet connection.
+- AUREL is a sample brand name and is already used by an eyewear seller. Check a replacement name before launch.
+- Replace sample products, prices, product images, and business contact details with verified information.
+- The cart is a browser-side demo. Checkout does not accept orders or payments until a commerce/payment provider is connected.
+- Newsletter signup is a front-end demo and does not store email addresses.
+- Confirm shipping, returns, privacy and terms content for your actual business.
+- The page currently uses USD prices and hosted Google Fonts/Unsplash images.
+
